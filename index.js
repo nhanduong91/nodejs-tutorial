@@ -10,9 +10,16 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
+var _data = require('./lib/data');
+
+// TESTING
+// @TODO delete this
+_data.delete('test', 'newFile', function (err, data) {
+  console.log('err: ', err, 'data: ', data);
+})
 
 // Instantiate the HTTP server
-var httpServer = http.createServer(function(req, res) {
+var httpServer = http.createServer(function (req, res) {
   unifiedServer(req, res);
 });
 
@@ -26,7 +33,7 @@ var httpsServerOptions = {
   'key': fs.readFileSync('./https/key.pem'),
   'cert': fs.readFileSync('./https/cert.pem')
 };
-var httpsServer = https.createServer(httpsServerOptions, function(req, res) {
+var httpsServer = https.createServer(httpsServerOptions, function (req, res) {
   unifiedServer(req, res);
 });
 
@@ -106,20 +113,19 @@ var unifiedServer = function (req, res) {
 
 // ================ ROUTER ================
 
- // Define a request router
+// Define a request router
 var handlers = {};
 
 // Sample handler
-handlers.sample = function(data, callback) {
-  // callback a htt status code, and a payload object
-  callback(406, {'name': 'sample handler'});
+handlers.ping = function (data, callback) {
+  callback(200);
 };
 
 // Not found handler
-handlers.notFound = function(data, callback) {
+handlers.notFound = function (data, callback) {
   callback(404)
 }
 
 var router = {
-  'sample': handlers.sample
+  'ping': handlers.ping
 };
