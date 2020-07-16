@@ -74,6 +74,7 @@ var unifiedServer = function (req, res) {
     buffer += decoder.end();
 
     // Chose the handler this request should to go.
+    
     var chosenHandler = typeof (router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
 
     // Construct the data object to send to the handler
